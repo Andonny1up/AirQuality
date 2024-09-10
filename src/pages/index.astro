@@ -1,19 +1,22 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
+import Layout from "../layouts/Layout.astro";
+import AirQuality from "../components/AirQuality.jsx";
 ---
 
 <Layout title="Welcome to Astro.">
-	<section>
-		<div class="bg-black">
-			<h1>Welcome to Astro</h1>
-			<p>
-				Welcome to Astro, a new kind of static site builder. Astro combines the best parts of modern build tools, like React and ES modules, and the best parts of static site builders, like Eleventy and Jekyll. Astro is a new kind of static site builder that delivers lightning-fast performance with a modern developer experience.
-			</p>
-		</div>
-	</section>
+  <section>
+    <div class="">
+      <h1>Welcome to Astro</h1>
+      <p>
+        Welcome to Astro, a new kind of static site builder. Astro combines the
+        best parts of modern build tools, like React and ES modules, and the
+        best parts of static site builders, like Eleventy and Jekyll. Astro is a
+        new kind of static site builder that delivers lightning-fast performance
+        with a modern developer experience.
+      </p>
+      <AirQuality client:load />
+    </div>
+  </section>
 </Layout>
 
-<style>
-	
-</style>
+<style></style>

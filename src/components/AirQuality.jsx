@@ -1,38 +1,74 @@
 import React, { useEffect, useState } from 'react';
+import {
+  GoodIcon,
+  ModerateIcon,
+  UnhealthySensitiveIcon,
+  UnhealthyIcon,
+  HazardousIcon
+} from './airQualityIcons.jsx';
 
 const AirQuality = () => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch('https://api.airvisual.com/v2/city?city=Trinidad&state=Beni&country=Bolivia&key=TU_CLAVE_API');
-      //api.airvisual.com/v2/city?city=Los Angeles&state=California&country=USA&key={{YOUR_API_KEY}}
-      const result = await response.json();
-      setData(result.data);
+      try {
+        const response = await fetch('/src/data/airQualityData.json');
+        const jsonData = await response.json();
+        setData(jsonData);
+      } catch (error) {
+        console.error('Error fetching air quality data:', error);
+      }
     };
 
     fetchData();
   }, []);
 
   const getAQICategory = (aqi) => {
-    if (aqi <= 50) return 'Bueno';
-    if (aqi <= 100) return 'Moderado';
-    if (aqi <= 150) return 'Perjudicial para grupos sensibles';
-    if (aqi <= 200) return 'Perjudicial';
-    if (aqi <= 300) return 'Muy perjudicial';
-    return 'Peligroso';
+    if (aqi === 1) return 'Bueno';
+    if (aqi === 2) return 'Moderado';
+    if (aqi === 3) return 'Perjudicial para grupos sensibles';
+    if (aqi === 4) return 'Perjudicial';
+    if (aqi === 5) return 'Peligroso';
+  };
+
+  const getAQIBg= (aqi) => {
+    if (aqi === 1) return 'bg-green-500';
+    if (aqi === 2) return 'bg-yellow-500';
+    if (aqi === 3) return 'bg-orange-500';
+    if (aqi === 4) return 'bg-red-500';
+    if (aqi === 5) return 'bg-purple-950';
+  };
+
+  const getAQIIcon = (aqi) => {
+    if (aqi === 1) return <GoodIcon />;
+    if (aqi === 2) return <ModerateIcon />;
+    if (aqi === 3) return <UnhealthySensitiveIcon />;
+    if (aqi === 4) return <UnhealthyIcon />;
+    if (aqi === 5) return <HazardousIcon className='w-20 text-white'/>;
   };
 
   if (!data) {
     return <div>Cargando...</div>;
   }
 
+  const { list } = data;
+  const { main, components, dt } = list[0];
+  //usar el dt a la hora de mostrar la fecha
+  const dateNow = new Date(dt * 1000);
+  const date = `${dateNow.getDate()}/${dateNow.getMonth()}/${dateNow.getFullYear()}`;
+
   return (
-    <div className="p-4 bg-white rounded shadow">
-      <h1 className="text-2xl font-bold">Calidad del Aire en Trinidad, Beni</h1>
-      <p>Índice de Calidad del Aire: {data.current.pollution.aqius}</p>
-      <p>Temperatura: {data.current.weather.tp}°C</p>
-      <p>Humedad: {data.current.weather.hu}%</p>
+    <div className="bg-white rounded shadow overflow-hidden max-w-2xl mx-auto">
+      <div className={`p-4 ${getAQIBg(main.aqi)} flex justify-between`}>
+        <div className='text-white'>
+            <h2>Índice de la Calidad del Aire</h2>
+            <p className='text-4xl font-bold'>{getAQICategory(main.aqi)}</p>
+        </div>
+        <div>
+          {getAQIIcon(main.aqi)}
+        </div>
+      </div>
     </div>
   );
 };
