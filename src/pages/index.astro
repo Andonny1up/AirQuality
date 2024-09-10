@@ -1,6 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import AirQuality from "../components/AirQuality.jsx";
+import AirQualityList from "../components/AirQualityList";
+import airQualityForecastData from "../data/airQualityForecastData.json";
 ---
 
 <Layout title="Welcome to Astro.">
@@ -15,6 +17,7 @@ import AirQuality from "../components/AirQuality.jsx";
         with a modern developer experience.
       </p>
       <AirQuality client:load />
+      <AirQualityList data={airQualityForecastData} client:load />
     </div>
   </section>
 </Layout>
