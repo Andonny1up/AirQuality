@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import {
   GoodIcon,
   ModerateIcon,
@@ -58,10 +58,8 @@ const AirQuality = () => {
   const dateNow = new Date(dt * 1000);
   const date = `${dateNow.getDate()}/${dateNow.getMonth() + 1}/${dateNow.getFullYear()}`;
   const time = `${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}`;
-  
-  //promedio de los componentes
-  const average = Object.values(components).reduce((acc, value) => acc + value, 0) / Object.values(components).length;
-  
+
+
   //------------LOGICA COMPONENTS DATA --------------
   // rangos para contaminantes
   const ranges = {
@@ -98,10 +96,6 @@ const AirQuality = () => {
         <div className='text-white'>
             <h2>Índice de la Calidad del Aire</h2>
             <p className='text-4xl font-bold'>{getAQICategory(main.aqi)}</p>
-            <p></p>
-            <p className='bg-white p-2 m-2 text-black rounded-sm w-fit '>
-              {average.toFixed(2)} µg/m³
-            </p>
         </div>
         <div>
           {getAQIIcon(main.aqi)}

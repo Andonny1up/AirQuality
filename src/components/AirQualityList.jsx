@@ -1,4 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import {
+  GoodIcon,
+  ModerateIcon,
+  UnhealthySensitiveIcon,
+  UnhealthyIcon,
+  HazardousIcon
+} from './airQualityIcons.jsx';
 
 const AirQualityList = ({ data }) => {
   const [currentIndex, setCurrentIndex] = useState(0); // Índice del carrusel
@@ -46,23 +53,50 @@ const AirQualityList = ({ data }) => {
         time: hora
       };
   };
+  //--------- herlpers -------
+  const getAQIBg= (aqi) => {
+    if (aqi === 1) return 'bg-green-500';
+    if (aqi === 2) return 'bg-yellow-500';
+    if (aqi === 3) return 'bg-orange-700';
+    if (aqi === 4) return 'bg-red-600';
+    if (aqi === 5) return 'bg-purple-950';
+  };
+
+  const getAQICategory = (aqi) => {
+    if (aqi === 1) return 'Bueno';
+    if (aqi === 2) return 'Moderado';
+    if (aqi === 3) return 'Perjudicial para grupos sensibles';
+    if (aqi === 4) return 'Perjudicial';
+    if (aqi === 5) return 'Peligroso';
+  };
+
+  const getAQIIcon = (aqi) => {
+    if (aqi === 1) return <GoodIcon className='w-20 text-white' />;
+    if (aqi === 2) return <ModerateIcon className='w-20 text-white' />;
+    if (aqi === 3) return <UnhealthySensitiveIcon className='w-20 text-white' />;
+    if (aqi === 4) return <UnhealthyIcon className='w-20 text-white' />;
+    if (aqi === 5) return <HazardousIcon className='w-20 text-white'/>;
+  };
 
   return (
-    <div className="p-4 bg-white rounded shadow max-w-2xl mx-auto mt-5">
-      <h1 className="text-2xl font-bold">Calidad del Aire Previsto Para las Proximas Hora</h1>
+    <div className="p-4 bg-white rounded shadow max-w-2xl mx-auto">
+      <h1 className="text-2xl font-bold text-gray-800 mb-5 uppercase text-center">Calidad del Aire Previsto Para las Proximas Horas</h1>
       <ul>
         {data.list.slice(currentIndex, currentIndex + itemsPerPage).map((item, index) => {
           const { day, date, time } = formatDate(item.dt);
           return (
-            <li key={index} className="bg-red-500 border-b border-gray-300 py-2">
+            <li key={index} className={`${getAQIBg(item.main.aqi)} mb-3 p-4 border-b border-gray-300 py-2 rounded-lg`}>
               <div className='flex justify-between'>
                 <div className='text-white font-bold text-center p-4'>
                     <p className='uppercase'>{day}</p>
                     <p>Fecha: {date}</p>
                     <p className='text-2xl'>{time}</p>
                 </div>
+                <div className='flex justify-center items-center text-white font-bold'>
+                  {getAQICategory(item.main.aqi)}
+                </div>
                 <div>
-                    <p>Índice de Calidad del Aire (AQI): {item.main.aqi}</p>
+                    { getAQIIcon(item.main.aqi) }
                 </div>
               </div>
             </li>

@@ -1,4 +1,3 @@
-import React from 'react';
 
 export const GoodIcon = ({ className }) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400.66 538.93" className={className}>
